@@ -29,7 +29,7 @@
 
 			import * as THREE from 'three';
 
-			import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
+			// import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
 
 			import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 			import { TeapotGeometry } from 'three/addons/geometries/TeapotGeometry.js';
@@ -122,13 +122,13 @@
 
 			function onWindowResize() {
 
-				const canvasWidth = window.innerWidth;
-				const canvasHeight = window.innerHeight;
+				// const canvasWidth = window.innerWidth;
+				// const canvasHeight = window.innerHeight;
 
-				renderer.setSize( canvasWidth, canvasHeight );
+				// renderer.setSize( canvasWidth, canvasHeight );
 
-				camera.aspect = canvasWidth / canvasHeight;
-				camera.updateProjectionMatrix();
+				// camera.aspect = canvasWidth / canvasHeight;
+				// camera.updateProjectionMatrix();
 
 				render();
 
@@ -146,14 +146,14 @@
 					newShading: 'glossy'
 				};
 
-				const gui = new GUI();
-				gui.add( effectController, 'newTess', [ 2, 3, 4, 5, 6, 8, 10, 15, 20, 30, 40, 50 ] ).name( 'Tessellation Level' ).onChange( render );
-				gui.add( effectController, 'lid' ).name( 'display lid' ).onChange( render );
-				gui.add( effectController, 'body' ).name( 'display body' ).onChange( render );
-				gui.add( effectController, 'bottom' ).name( 'display bottom' ).onChange( render );
-				gui.add( effectController, 'fitLid' ).name( 'snug lid' ).onChange( render );
-				gui.add( effectController, 'nonblinn' ).name( 'original scale' ).onChange( render );
-				gui.add( effectController, 'newShading', [ 'wireframe', 'flat', 'smooth', 'glossy', 'textured', 'reflective' ] ).name( 'Shading' ).onChange( render );
+				// const gui = new GUI();
+				// gui.add( effectController, 'newTess', [ 2, 3, 4, 5, 6, 8, 10, 15, 20, 30, 40, 50 ] ).name( 'Tessellation Level' ).onChange( render );
+				// gui.add( effectController, 'lid' ).name( 'display lid' ).onChange( render );
+				// gui.add( effectController, 'body' ).name( 'display body' ).onChange( render );
+				// gui.add( effectController, 'bottom' ).name( 'display bottom' ).onChange( render );
+				// gui.add( effectController, 'fitLid' ).name( 'snug lid' ).onChange( render );
+				// gui.add( effectController, 'nonblinn' ).name( 'original scale' ).onChange( render );
+				// gui.add( effectController, 'newShading', [ 'wireframe', 'flat', 'smooth', 'glossy', 'textured', 'reflective' ] ).name( 'Shading' ).onChange( render );
 
 			}
 
@@ -183,15 +183,15 @@
 				}
 
 				// skybox is rendered separately, so that it is always behind the teapot.
-				if ( shading === 'reflective' ) {
+				// if ( shading === 'reflective' ) {
 
-					scene.background = textureCube;
+				// 	// scene.background = textureCube;
 
-				} else {
+				// } else {
 
-					scene.background = null;
+				// 	// scene.background = null;
 
-				}
+				// }
 
 				renderer.render( scene, camera );
 

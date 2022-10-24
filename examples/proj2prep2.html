@@ -30,7 +30,27 @@
 
 			import * as THREE from 'three';
 
+			import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+			import { TeapotGeometry } from 'three/addons/geometries/TeapotGeometry.js';
+
+
 			let camera, scene, renderer;
+
+			let cameraControls;
+			let effectController;
+			const teapotSize = 300;
+			let ambientLight, light;
+
+			let tess = - 1;	// force initialization
+			let bBottom;
+			let bLid;
+			let bBody;
+			let bFitLid;
+			let bNonBlinn;
+			let shading;
+
+			let teapot, textureCube;
+			const materials = {};
 
 			let isUserInteracting = false,
 				onPointerDownMouseX = 0, onPointerDownMouseY = 0,
@@ -40,6 +60,7 @@
 
 			init();
 			animate();
+			render();
 
 			function init() {
 
@@ -51,7 +72,7 @@
 
 				const geometry = new THREE.SphereGeometry( 500, 60, 40 );
 				// invert the geometry on the x-axis so that all of the faces point inward
-				geometry.scale( - 1, 1, 1 );
+				// geometry.scale( - 1, 1, 1 );
 
 				const texture = new THREE.TextureLoader().load( 'textures/giant_yellow_head.jpg' );
 				const material = new THREE.MeshBasicMaterial( { map: texture } );
@@ -112,6 +133,66 @@
 
 				window.addEventListener( 'resize', onWindowResize );
 
+				// const container = document.createElement( 'div' );
+				document.body.appendChild( container );
+
+				const canvasWidth = window.innerWidth;
+				const canvasHeight = window.innerHeight;
+
+				// CAMERA
+				// camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 80000 );
+				camera.position.set( - 600, 550, 1000 );
+
+				// LIGHTS
+				ambientLight = new THREE.AmbientLight( 0x333333 );
+
+				light = new THREE.DirectionalLight( 0xFFFFFF, 1.0 );
+				light.position.set( 0.32, 0.39, 0.7 );
+
+				// RENDERER
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( canvasWidth, canvasHeight );
+				renderer.outputEncoding = THREE.sRGBEncoding;
+				container.appendChild( renderer.domElement );
+
+				// EVENTS
+				// window.addEventListener( 'resize', onWindowResize );
+
+				// CONTROLS
+				cameraControls = new OrbitControls( camera, renderer.domElement );
+				cameraControls.addEventListener( 'change', render );
+
+				// TEXTURE MAP
+				const textureMap = new THREE.TextureLoader().load( 'textures/uv_grid_opengl.jpg' );
+				// textureMap.wrapS = textureMap.wrapT = THREE.RepeatWrapping;
+				textureMap.anisotropy = 6;
+				textureMap.encoding = THREE.sRGBEncoding;
+
+				// REFLECTION MAP
+				const path = 'textures/cube/pisa/';
+				const urls = [ 'px.png', 'nx.png', 'py.png', 'ny.png', 'pz.png', 'nz.png' ];
+
+				textureCube = new THREE.CubeTextureLoader().setPath( path ).load( urls );
+				textureCube.encoding = THREE.sRGBEncoding;
+
+				materials[ 'wireframe' ] = new THREE.MeshBasicMaterial( { wireframe: true } );
+				materials[ 'flat' ] = new THREE.MeshPhongMaterial( { specular: 0x000000, flatShading: true, side: THREE.DoubleSide } );
+				materials[ 'smooth' ] = new THREE.MeshLambertMaterial( { side: THREE.DoubleSide } );
+				materials[ 'glossy' ] = new THREE.MeshPhongMaterial( { side: THREE.DoubleSide } );
+				materials[ 'textured' ] = new THREE.MeshPhongMaterial( { map: textureMap, side: THREE.DoubleSide } );
+				materials[ 'reflective' ] = new THREE.MeshPhongMaterial( { envMap: textureCube, side: THREE.DoubleSide } );
+
+				// scene itself
+				// scene = new THREE.Scene();
+				// scene.background = new THREE.Color( 0xAAAAAA );
+
+				scene.add( ambientLight );
+				scene.add( light );
+
+				// GUI
+				setupGui();
+
 			}
 
 			function onWindowResize() {
@@ -120,6 +201,7 @@
 				camera.updateProjectionMatrix();
 
 				renderer.setSize( window.innerWidth, window.innerHeight );
+				render();
 
 			}
 
@@ -198,6 +280,67 @@
 				renderer.render( scene, camera );
 
 			}
+
+			function setupGui() {
+
+			effectController = {
+				newTess: 15,
+				bottom: true,
+				lid: true,
+				body: true,
+				fitLid: false,
+				nonblinn: false,
+				newShading: 'glossy'
+			};
+		}
+
+
+		function render() {
+
+		if ( effectController.newTess !== tess ||
+			effectController.bottom !== bBottom ||
+			effectController.lid !== bLid ||
+			effectController.body !== bBody ||
+			effectController.fitLid !== bFitLid ||
+			effectController.nonblinn !== bNonBlinn ||
+			effectController.newShading !== shading ) {
+
+			tess = effectController.newTess;
+			bBottom = effectController.bottom;
+			bLid = effectController.lid;
+			bBody = effectController.body;
+			bFitLid = effectController.fitLid;
+			bNonBlinn = effectController.nonblinn;
+			shading = effectController.newShading;
+
+			createNewTeapot();
+
+		}
+
+	}
+       
+		function createNewTeapot() {
+
+		if ( teapot !== undefined ) {
+
+			teapot.geometry.dispose();
+			scene.remove( teapot );
+
+		}
+
+		const geometry = new TeapotGeometry( teapotSize,
+			tess,
+			effectController.bottom,
+			effectController.lid,
+			effectController.body,
+			effectController.fitLid,
+			! effectController.nonblinn );
+
+		teapot = new THREE.Mesh( geometry, materials[ shading ] );
+
+		scene.add( teapot );
+
+		}
 			
 
 
