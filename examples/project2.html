@@ -10,8 +10,33 @@
 
 		<div id="container"></div>
 		<div id="info">
-			<a href="https://threejs.org" target="_blank" rel="noopener">three.js webgl</a> <br> Project 2 - Turning the <i> Giant Yellow Head </i> collage into a 3D space.
+			<b>Turn on volume for sound <br>
+			Left click and hold to drag around the room <br>
+			Right click to pause, copy, or save image.</b> 
 		</div>
+		<!-- sound -->
+		<!-- <audio id="song" preload="auto" style="display: none">
+			<source src="sounds/358232_j_s_song.ogg" type="audio/ogg">
+			<source src="sounds/358232_j_s_song.mp3" type="audio/mpeg">
+		</audio>
+		<audio id="skullbeatz" preload="auto" style="display: none">
+			<source src="sounds/376737_Skullbeatz___Bad_Cat_Maste.ogg" type="audio/ogg">
+			<source src="sounds/376737_Skullbeatz___Bad_Cat_Maste.mp3" type="audio/mpeg">
+		</audio> -->
+		<audio id="utopia" loop preload="auto" style="display: none">
+			<source src="sounds/Project_Utopia.ogg" type="audio/ogg">
+			<source src="sounds/Project_Utopia.mp3" type="audio/mpeg">
+		</audio>
+		<!-- <div id="overlay">
+			<button id="startButton">Play</button>
+		</div> -->
+		<!-- <div id="info">
+			<a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> webaudio - sandbox<br/>
+			music by <a href="http://www.newgrounds.com/audio/listen/358232" target="_blank" rel="noopener">larrylarrybb</a>,
+			<a href="http://www.newgrounds.com/audio/listen/376737" target="_blank" rel="noopener">skullbeatz</a> and
+			<a href="http://opengameart.org/content/project-utopia-seamless-loop" target="_blank" rel="noopener">congusbongus</a><br/><br/>
+			navigate with WASD / arrows / mouse
+		</div> -->
 
 		<!-- Import maps polyfill -->
 		<!-- Remove this when import maps will be widely supported -->
@@ -26,6 +51,7 @@
 			}
 		</script>
 
+
 		<script type="module">
 
 			import * as THREE from 'three';
@@ -37,15 +63,23 @@
 				lon = 0, onPointerDownLon = 0,
 				lat = 0, onPointerDownLat = 0,
 				phi = 0, theta = 0;
+			
+			let song;
+
+			// const startButton = document.getElementById( 'startButton' );
+			// startButton.addEventListener( 'click', init );
 
 			init();
 			animate();
 
 			function init() {
 
+				// const overlay = document.getElementById( 'overlay' );
+				// // overlay.remove();
+
 				const container = document.getElementById( 'container' );
 
-				camera = new THREE.PerspectiveCamera( 110, window.innerWidth / window.innerHeight, 1, 500 );
+				camera = new THREE.PerspectiveCamera( 115, window.innerWidth / window.innerHeight, 1, 300 );
 
 				scene = new THREE.Scene();
 1
@@ -108,9 +142,18 @@
 
 				} );
 
+				const listener = new THREE.AudioListener();
+				camera.add( listener );
+
 				//
 
 				window.addEventListener( 'resize', onWindowResize );
+
+				const sound4 = new THREE.Audio( listener );
+				const utopiaElement = document.getElementById( 'utopia' );
+				sound4.setMediaElementSource( utopiaElement );
+				sound4.setVolume( 0.5 );
+				utopiaElement.play();
 
 			}
 
@@ -137,6 +180,7 @@
 
 				document.addEventListener( 'pointermove', onPointerMove );
 				document.addEventListener( 'pointerup', onPointerUp );
+				event.dataTransfer.dropEffect = 'copy';
 
 			}
 
@@ -157,6 +201,7 @@
 
 				document.removeEventListener( 'pointermove', onPointerMove );
 				document.removeEventListener( 'pointerup', onPointerUp );
+				event.dataTransfer.dropEffect = 'copy';
 
 			}
 
@@ -181,7 +226,7 @@
 
 				if ( isUserInteracting === false ) {
 
-					lon += 0.1;
+					lon += 0.15;
 
 				}
 

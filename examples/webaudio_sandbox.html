@@ -19,9 +19,9 @@
 			<source src="sounds/Project_Utopia.ogg" type="audio/ogg">
 			<source src="sounds/Project_Utopia.mp3" type="audio/mpeg">
 		</audio>
-		<div id="overlay">
+		<!-- <div id="overlay">
 			<button id="startButton">Play</button>
-		</div>
+		</div> -->
 		<div id="info">
 			<a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> webaudio - sandbox<br/>
 			music by <a href="http://www.newgrounds.com/audio/listen/358232" target="_blank" rel="noopener">larrylarrybb</a>,
@@ -59,13 +59,9 @@
 
 			const clock = new THREE.Clock();
 
-			const startButton = document.getElementById( 'startButton' );
-			startButton.addEventListener( 'click', init );
 
 			function init() {
 
-				const overlay = document.getElementById( 'overlay' );
-				overlay.remove();
 
 				camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 10000 );
 				camera.position.set( 0, 25, 0 );
@@ -87,6 +83,7 @@
 				material3 = new THREE.MeshPhongMaterial( { color: 0x6622aa, flatShading: true, shininess: 0 } );
 
 				// sound spheres
+
 
 				const mesh1 = new THREE.Mesh( sphere, material1 );
 				mesh1.position.set( - 250, 30, 0 );
