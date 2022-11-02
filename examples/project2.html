@@ -10,19 +10,11 @@
 
 		<div id="container"></div>
 		<div id="info">
-			<b>Turn on volume for sound <br>
-			Left click and hold to drag around the room <br>
-			Right click to pause, copy, or save image.</b> 
+			<b>Turn on sound <br>
+			Navigate with mouse <br>
+			Right click to save </b> 
 		</div>
-		<!-- sound -->
-		<!-- <audio id="song" preload="auto" style="display: none">
-			<source src="sounds/358232_j_s_song.ogg" type="audio/ogg">
-			<source src="sounds/358232_j_s_song.mp3" type="audio/mpeg">
-		</audio>
-		<audio id="skullbeatz" preload="auto" style="display: none">
-			<source src="sounds/376737_Skullbeatz___Bad_Cat_Maste.ogg" type="audio/ogg">
-			<source src="sounds/376737_Skullbeatz___Bad_Cat_Maste.mp3" type="audio/mpeg">
-		</audio> -->
+		
 		<audio id="utopia" loop preload="auto" style="display: none">
 			<source src="sounds/Project_Utopia.ogg" type="audio/ogg">
 			<source src="sounds/Project_Utopia.mp3" type="audio/mpeg">
@@ -30,16 +22,6 @@
 		<!-- <div id="overlay">
 			<button id="startButton">Play</button>
 		</div> -->
-		<!-- <div id="info">
-			<a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> webaudio - sandbox<br/>
-			music by <a href="http://www.newgrounds.com/audio/listen/358232" target="_blank" rel="noopener">larrylarrybb</a>,
-			<a href="http://www.newgrounds.com/audio/listen/376737" target="_blank" rel="noopener">skullbeatz</a> and
-			<a href="http://opengameart.org/content/project-utopia-seamless-loop" target="_blank" rel="noopener">congusbongus</a><br/><br/>
-			navigate with WASD / arrows / mouse
-		</div> -->
-
-		<!-- Import maps polyfill -->
-		<!-- Remove this when import maps will be widely supported -->
 		<script async src="https://unpkg.com/es-module-shims@1.3.6/dist/es-module-shims.js"></script>
 
 		<script type="importmap">
@@ -77,9 +59,12 @@
 				// const overlay = document.getElementById( 'overlay' );
 				// // overlay.remove();
 
+				// 	const startButton = document.getElementById( 'startButton' );
+				// // startButton.addEventListener( 'click', init );
+
 				const container = document.getElementById( 'container' );
 
-				camera = new THREE.PerspectiveCamera( 115, window.innerWidth / window.innerHeight, 1, 300 );
+				camera = new THREE.PerspectiveCamera( 125, window.innerWidth / window.innerHeight, 1, 300 );
 
 				scene = new THREE.Scene();
 1
@@ -93,6 +78,7 @@
 				const mesh = new THREE.Mesh( geometry, material );
 
 				scene.add( mesh );
+
 
 				renderer = new THREE.WebGLRenderer();
 				renderer.setPixelRatio( window.devicePixelRatio );
@@ -226,7 +212,7 @@
 
 				if ( isUserInteracting === false ) {
 
-					lon += 0.15;
+					lon += 0.12;
 
 				}
 
